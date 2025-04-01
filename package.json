@@ -88,7 +88,7 @@
   },
   "scripts": {
     "dev": "parcel index.html",
-    "build": "parcel build index.html --public-url- ./ "
+    "build": "parcel build index.html --no-autoinstall --no-optimize"
   },
   "author": "",
   "license": "ISC"
