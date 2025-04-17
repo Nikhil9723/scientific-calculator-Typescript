@@ -10,19 +10,21 @@ import {
   memoryRead
 } from "../scripts/memoryManagment"
 
+import { BUTTON_TYPES, ELEMENT_IDS } from "./constants";
+
 
 let inputStr:string = "";
 let displayStr:string = "";
 //calculator input field
 const calcInput = document.getElementById("display")! as HTMLDivElement;
 const displayValue = document.getElementById("calculator-input") as HTMLDListElement;
-const degTorad = document.getElementById('deg-btn') as HTMLButtonElement;
+const degTorad = document.getElementById(ELEMENT_IDS.DEG_BTN) as HTMLButtonElement;
 
 
 
 //get elemet for square and squareRoot
-const square = document.getElementById("square") as HTMLButtonElement;
-const squareRoot = document.getElementById("squareRoot") as HTMLButtonElement;
+const square = document.getElementById(ELEMENT_IDS.SQUARE) as HTMLButtonElement;
+const squareRoot = document.getElementById(ELEMENT_IDS.SQUARE_ROOT) as HTMLButtonElement;
 
 
 
@@ -82,7 +84,7 @@ export function updateDisplay() {
     }
     switch(currentKey) {
       
-      case "=":
+      case BUTTON_TYPES.EQUAL:
     
         if(!inputStr) {
           calcInput.textContent = '0';
@@ -95,32 +97,33 @@ export function updateDisplay() {
       
         break;
 
-      case "F-E":
+      case BUTTON_TYPES.FUNCTION_EXPONENTIAL:
         toggleExponential()
         break;
 
-      case "DEG":
+      case BUTTON_TYPES.DEG:
         degToRad()
         currentKey = "RAD"
         break;
 
-      case "RAD":
+      case BUTTON_TYPES.RAD:
         degToRad()
         currentKey = "DEG"
-        break
-      case "C":
+        break;
+
+      case BUTTON_TYPES.CLEAR_SCREEN:
       clearScreen();
       break;
 
-      case "backspace":
+      case BUTTON_TYPES.BACKSPACE:
         removeLastChar();
         break;
 
-      case "*":
+      case BUTTON_TYPES.MULTIPLICATION:
         calcMultiplication();
         break;
 
-      case "factorial":
+      case BUTTON_TYPES.FACTORIAL:
         if(!inputStr) {
           return;
         }
@@ -141,101 +144,101 @@ export function updateDisplay() {
         
         break;
       
-      case "square":
+      case BUTTON_TYPES.SQUARE:
         calcSquare();
         break;
 
-      case "2nd":
+      case BUTTON_TYPES.SECOND_FUNCTIONALITY:
         secondFunctionality()
         break;
 
-      case "powerof10":
+      case BUTTON_TYPES.POWER_OF_10:
         displayStr += "10^"
         calcInput.textContent = displayStr;
         inputStr += "10 **"
         break;
         
-      case "1/":
+      case BUTTON_TYPES.INVERSE:
         calcInverse();
         break;
 
-        case "absolute-value":
+        case BUTTON_TYPES.ABSOLUTE_VALUE:
           calcAbsolute();
           break;
 
-        case "exp":
+        case BUTTON_TYPES.EXPONENET:
           exponents();
           break;
 
-        case "power":
+        case BUTTON_TYPES.POWER:
         calcPower();
         break;
 
-        case "squareRoot":
+        case BUTTON_TYPES.SQUARE_ROOT:
           calcSquareRoot()
           break;
 
-        case "log":
+        case BUTTON_TYPES.LOG:
           calcLogaritham();
           break;
 
-        case "ln":
+        case BUTTON_TYPES.LN:
           calcLn()
           break;
 
-        case "e":
+        case BUTTON_TYPES.E:
           calcExponent()
           break;
 
-        case "+/-":
+        case BUTTON_TYPES.PLUSH_MINUS:
           toogleSign()
           break;
 
       //Trignometry function
         
-      case "sin":
+      case BUTTON_TYPES.SINEX:
         sinex();
         break;
 
-      case "cos":
+      case BUTTON_TYPES.COSEX:
         cosex();
         break;
 
-      case "tan":
+      case BUTTON_TYPES.TANEX:
         tanx();
         break;
 
       //Advance function
 
-      case "floor":
+      case BUTTON_TYPES.FLOOR:
         floor();
         break;
 
-      case "ceil":
+      case BUTTON_TYPES.CEIL:
         ceil();
         break;
 
-      case 'M+':{
+      case BUTTON_TYPES.MEMORY_PLUSH:{
         memoryPlus()
         break;
       }
 
-      case "M-": {
+      case BUTTON_TYPES.MEMORY_MINUS: {
         memorySubtraction();
         break;
       }
 
-      case "MS": {
+      case BUTTON_TYPES.MEMORY_SAVE: {
         memorySave()
         break;
       }
 
-      case "MR":
+      case BUTTON_TYPES.MEMORY_READ:
         memoryRead();
         
         break;
 
-      case "MC":
+      case BUTTON_TYPES.MEMORY_CLEAR:
         memoryClear()
         break;
 
@@ -309,15 +312,11 @@ function calcMultiplication() {
 //calculate square of number
 function calcSquare() {
   if(!is2nd) {
-    displayStr += "^3";
-    inputStr += "**3"
+    updateCalculationString("^3", "**3")
   }
   else {
-    displayStr += "^2";
-    inputStr += "**2"
+    updateCalculationString("^2", "**2")
   }
-  calcInput.textContent = displayStr;
-  // calcInput.scrollTo(calcInput.offsetWidth, 0);
 }
 
 //calculate inverse of number
@@ -343,9 +342,11 @@ function calcSquareRoot() {
   if(!is2nd) {
     displayStr += "√("
     inputStr += "Math.cbrt("
+    updateCalculationString("√(", "Math.cbrt(")
   } else {
      displayStr += "√("
-     inputStr += "Math.sqrt("
+     inputStr += "Math.sqrt(";
+     updateCalculationString("√(", "Math.sqrt(")
   }
   calcInput.textContent = displayStr;
   calcInput.scrollTo(calcInput.offsetWidth, 0);
@@ -353,27 +354,21 @@ function calcSquareRoot() {
 
 //calclate logaritham
 function calcLogaritham() {
-  displayStr += "log("
-  inputStr += "Math.log10("
-  calcInput.textContent = displayStr;
+  updateCalculationString("log(", "Math.log10(")
 }
 
 //calculate Ln for number
 function calcLn() {
-  displayStr += "ln(";
-  inputStr += "Math.log(";
-  calcInput.textContent = displayStr;
+  updateCalculationString("ln(", "Math.log(")
 }
 
 //calclate exponenet of number 
 function calcExponent() {
-  displayStr += "e";
-    if(!inputStr) {
-    inputStr += "Math.E";
-    } else {
-      inputStr+= "*Math.E";
-    }
-  calcInput.textContent = displayStr
+  if(!inputStr) {
+    updateCalculationString("e", "Math.E");
+  } else {
+    updateCalculationString("e", "*Math.E")
+  }
 }
 
 //toogle sign for output or input between + or -
@@ -443,26 +438,16 @@ function calcfactorial(num: number) :number{
 
 function exponents() {
   if(!inputStr) {
-    displayStr += "10^"
-    inputStr += "10 ** ";
-    calcInput.textContent = displayStr;
-
+    updateCalculationString("10^", "10 ** ")
   } else {
-     displayStr += " x10^";
-     inputStr += "*10 **";
-     calcInput.textContent = displayStr;
+     updateCalculationString(" x10^", "*10 **")
   }
 }
 
 // calculate Absolute
 
 function calcAbsolute() {
-  displayStr += "|";
-  inputStr += "|"
-  calcInput.textContent = displayStr;
-  
-  // let newstr = inputStr;
-
+  updateCalculationString("|",  "|");
 }
 
 // calculate Function exponention
@@ -490,38 +475,51 @@ function toggleExponential() {
  
  // calculate trignometry function
  function sinex() {
-// Math.PI
-  inputStr += !isRad ? "Math.sin(" : "Math.sin((Math.PI/180)*"
-  displayStr += "sin(";
-  // inputStr += "Math.sin("
-  calcInput.textContent = displayStr;
+  if(!isRad) {
+    updateCalculationString("sin(", "Math.sin(");
+  }
+  else {
+    updateCalculationString("sin(",  "Math.sin((Math.PI/180)*");
+}  
  }
  
  function cosex() {
-  inputStr += !isRad ? "Math.cos(" : "Math.cos((Math.PI/180)*"
-  displayStr += "cos(";
-  calcInput.textContent = displayStr;
+  if(!isRad) {
+    updateCalculationString("cos(",  "Math.cos(");
+  }
+  else {
+    updateCalculationString("cos(",  "Math.cos((Math.PI/180)*");
+  }
  }
 
  function tanx() {
-  inputStr += !isRad ? "Math.tan(" : "Math.tan((Math.PI/180)*"
-  displayStr += "tan(";
-  calcInput.textContent = displayStr;
+  if(!isRad) {
+    updateCalculationString("tan(", "Math.tan(")
+  }
+  else {
+    updateCalculationString("tan(", "Math.tan((Math.PI/180)*")
+  }
  } 
 
 //Advanced function
 
 function floor() {
-  inputStr += "Math.floor("
-  displayStr += "floor("
-  calcInput.textContent = displayStr;
+  updateCalculationString("floor(", "Math.floor(");
 }
 
 function ceil() {
-  inputStr += "Math.ceil("
-  displayStr += "ceil("
-  calcInput.textContent = displayStr;
+  updateCalculationString("ceil(", "Math.ceil(");
 }
+// utility function to update the string for some scientific and exponent
+
+
+function updateCalculationString(displayAddition: string, inputAddition: string) {
+  displayStr += displayAddition;
+  inputStr+= inputAddition;
+  calcInput.textContent = displayStr;
+  calcInput.scrollTo(calcInput.offsetWidth, 0);
+}
+ 
 
 
 // dropdown functionality
