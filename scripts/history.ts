@@ -13,8 +13,8 @@ let history: string[] = JSON.parse(localStorage.getItem(HISTORY_KEY)!) || [];
 
 // is History for toogle history part
 let isHistory: boolean = false;
-
-let showHistory = document.getElementById("show-history") as HTMLButtonElement;
+let calculator = document.querySelector(".calculator")! as HTMLDivElement;
+let showHistory = document.getElementById("show-history")! as HTMLButtonElement;
 
   showHistory.addEventListener("click", (e) => {
   console.log("Hii");
@@ -22,11 +22,13 @@ let showHistory = document.getElementById("show-history") as HTMLButtonElement;
     
   if(isHistory){
       openHistory.style.display = "inline-block";
+      calculator.style.display = "none";
       // calcInput.style.display = "none"
       // displayValue.style.display = "none"
   }
   else {
       openHistory.style.display = "none";
+      calculator.style.display = "grid"
       // calcInput.style.display = "inline-block"
   }
    
