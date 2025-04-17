@@ -87,7 +87,7 @@
     "weak-lru-cache": "^1.2.2"
   },
   "scripts": {
-    "dev": "parcel index.html",
+    "dev": "parcel index.html ",
     "build": "parcel build index.html --no-autoinstall --no-optimize"
   },
   "author": "",
